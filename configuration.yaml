@@ -1,0 +1,7 @@
+# configuration.yaml
+
+# Starting year for individual model training
+individual_start_year: 2023
+
+# Excluded years 
+covid_year: 2020 # Excluded because of a difference in application deadlines
