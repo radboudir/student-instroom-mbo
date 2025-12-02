@@ -263,3 +263,68 @@ In the future, an ensemble model can be created to combine predictions from mult
 3.  Run each model separately to get their predictions.
 4.  Combine the results, for example by taking the average or a weighted average based on historical accuracy.
 5.  Update `main.py` to call the ensemble script instead of just the individual model.
+
+## Troubleshooting
+
+### Common Issues
+
+#### KeyError: 'Opleidingscode' or similar column errors
+**Problem**: CSV file is not being parsed correctly.
+
+**Solution**: 
+- Check that your CSV file uses the correct delimiter (`;`, `,`, or tab)
+- The system auto-detects delimiters, but verify your file format
+- Ensure column names match exactly (case-sensitive)
+
+#### ModuleNotFoundError
+**Problem**: Dependencies not installed or virtual environment not activated.
+
+**Solution**:
+```bash
+# Sync dependencies
+uv sync
+
+# Activate virtual environment
+# Windows:
+.venv\Scripts\activate
+# macOS/Linux:
+source .venv/bin/activate
+```
+
+#### No predictions generated
+**Problem**: Insufficient historical data or data quality issues.
+
+**Solution**:
+- Ensure you have at least 2 years of historical data
+- Check that `individual_start_year` in `configuration.yaml` is set correctly
+- Verify your data files contain the required columns (see `input/README.md`)
+- Run with `-v` flag for detailed output: `uv run main.py -y 2024 -w 8 -v`
+
+#### Cache issues
+**Problem**: Stale cached data causing incorrect predictions.
+
+**Solution**:
+```bash
+# Clear all cache directories
+python clear_cache.py
+```
+
+### Data Requirements
+
+For best results:
+- Minimum 2 years of historical enrollment data
+- Complete weekly application status updates
+- Consistent program codes across years
+- Final enrollment counts in the summary file
+
+### Getting Help
+
+If you encounter issues:
+1. Check the troubleshooting section above
+2. Review `input/README.md` for data requirements
+3. Run with verbose output: `uv run main.py -y 2024 -w 8 -v`
+4. Check the GitHub issues page for similar problems
+
+## License
+
+See LICENSE file for details.

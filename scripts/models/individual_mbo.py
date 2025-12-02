@@ -279,7 +279,19 @@ def main():
     
     # Load latest enrollment data
     logger.info("Loading enrollment summary data...")
-    latest_data = pd.read_csv("input/inschrijvingen_summary_mboa.csv", sep=";")
+    # Try to detect the correct delimiter
+    try:
+        latest_data = pd.read_csv("input/inschrijvingen_summary_mboa.csv", sep=";")
+        # Check if parsing worked (should have multiple columns)
+        if len(latest_data.columns) == 1:
+            # Try comma delimiter
+            latest_data = pd.read_csv("input/inschrijvingen_summary_mboa.csv", sep=",")
+            if len(latest_data.columns) == 1:
+                # Try tab delimiter
+                latest_data = pd.read_csv("input/inschrijvingen_summary_mboa.csv", sep="\t")
+    except Exception as e:
+        logger.error(f"Error loading enrollment summary: {e}")
+        raise
     
     # Clean latest_data
     latest_data = latest_data.rename(columns={
@@ -290,7 +302,8 @@ def main():
     })
     
     # Merge Opleidingsnaam from individual_data if available
-    if "Opleidingsnaam" in individual_data.columns:
+    # Note: individual_data still has original lowercase column names at this point
+    if "Opleidingsnaam" in individual_data.columns and "opleidingcode" in individual_data.columns:
         opleidings_mapping = individual_data[["opleidingcode", "Opleidingsnaam"]].drop_duplicates()
         opleidings_mapping = opleidings_mapping.rename(columns={"opleidingcode": "Opleidingscode"})
         latest_data = latest_data.merge(opleidings_mapping, on="Opleidingscode", how="left")

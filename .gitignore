@@ -1,31 +1,62 @@
 # Python-generated files
 __pycache__/
 *.py[oc]
+*.pyd
+*.so
 build/
 dist/
 wheels/
 *.egg-info
+*.egg
 
 # Virtual environments
-.venv
+.venv/
+venv/
+ENV/
+env/
 
 # Environment variables
 .env
-.env.example
+.env.local
+.env.*.local
 
-# Own test files
-test.py
+# Cache directories
+cache_dir/
+.uv_cache/
+.pytest_cache/
+.mypy_cache/
+
+# Debug and test files
+debug*.py
+debug*.txt
+test_*.py
+*_test.py
+inspection*.txt
+*.log
 
 # Notebooks
 *.ipynb
 *.ipynb_checkpoints
+.ipynb_checkpoints/
 
-# Output
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Output files
 output/*.xlsx
 output/**/*.xlsx
+output/*.csv
 
-# Input data
+# Input data (sensitive)
 input/*
 !input/.gitkeep
+!input/README.md
 *.csv
 
+# OS files
+Thumbs.db
